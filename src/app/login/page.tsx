@@ -32,15 +32,19 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-1">
-            <Label>Email</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
+              autoComplete="email"
+              id="email"
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               type="email"
             />
           </div>
           <div className="space-y-1">
-            <Label>Password</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
+              autoComplete="current-password"
+              id="password"
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               type="password"
             />
