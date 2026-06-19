@@ -2,15 +2,23 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { Resend } from "resend";
 
-/**
- * Sends a verification email to the user.
- */
+if (!process.env.RESEND_API_KEY) {
+  throw new Error("RESEND_API_KEY is not set");
+}
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const template = readFileSync(
-  join(process.cwd(), "src/emails/verify-email.html"),
-  "utf-8"
-);
+let template: string | null = null;
+
+function getTemplate() {
+  if (!template) {
+    template = readFileSync(
+      join(process.cwd(), "src/emails/verify-email.html"),
+      "utf-8"
+    );
+  }
+  return template;
+}
 
 export async function sendVerificationEmail({
   email,
@@ -21,12 +29,11 @@ export async function sendVerificationEmail({
   url: string;
   token: string;
 }) {
-  const html = template
+  const html = getTemplate()
     .replace("{{name}}", email)
     .replace("{{url}}", url)
     .replace("{{url}}", url);
 
-  // TODO: Add error handling, logging and change the from address
   const { data, error } = await resend.emails.send({
     from: "onboarding@resend.dev",
     to: email,
@@ -34,6 +41,11 @@ export async function sendVerificationEmail({
     html,
   });
 
-  console.log("Resend data:", data);
-  console.log("Resend error:", error);
+  if (error) {
+    throw new Error(`Failed to send verification email: ${error.message}`);
+  }
+
+  if (process.env.NODE_ENV !== "production") {
+    console.log("Verification email sent, id:", data?.id);
+  }
 }
