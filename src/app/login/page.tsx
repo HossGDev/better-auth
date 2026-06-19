@@ -1,3 +1,6 @@
+/**
+ * Login page for the application.
+ */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -21,6 +24,11 @@ export default function LoginPage() {
 
     if (!error) {
       router.push("/dashboard");
+    } else if (error.status === 403) {
+      router.push("/verify");
+    } else {
+      // optional: show error message
+      console.error(error.message);
     }
   }
 
