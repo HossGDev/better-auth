@@ -1,12 +1,13 @@
-import { render } from "@react-email/components";
+import { render } from "@react-email/render";
 import { Resend } from "resend";
 import { ResetPassword } from "../emails/reset-password";
 
-if (!process.env.RESEND_API_KEY) {
-  throw new Error("RESEND_API_KEY is not set");
+function getResendClient() {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error("RESEND_API_KEY is not set");
+  }
+  return new Resend(process.env.RESEND_API_KEY);
 }
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendPasswordResetEmail({
   email,
@@ -15,6 +16,7 @@ export async function sendPasswordResetEmail({
   email: string;
   url: string;
 }) {
+  const resend = getResendClient();
   const html = await render(<ResetPassword name={email} url={url} />);
 
   const { data, error } = await resend.emails.send({
