@@ -1,23 +1,12 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { render } from "@react-email/render";
 import { Resend } from "resend";
+import { VerifyEmail } from "../emails/verify-email";
 
-if (!process.env.RESEND_API_KEY) {
-  throw new Error("RESEND_API_KEY is not set");
-}
-
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-let template: string | null = null;
-
-function getTemplate() {
-  if (!template) {
-    template = readFileSync(
-      join(process.cwd(), "src/emails/verify-email.html"),
-      "utf-8"
-    );
+function getResendClient() {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error("RESEND_API_KEY is not set");
   }
-  return template;
+  return new Resend(process.env.RESEND_API_KEY);
 }
 
 export async function sendVerificationEmail({
@@ -29,10 +18,8 @@ export async function sendVerificationEmail({
   url: string;
   token: string;
 }) {
-  const html = getTemplate()
-    .replace("{{name}}", email)
-    .replace("{{url}}", url)
-    .replace("{{url}}", url);
+  const resend = getResendClient();
+  const html = await render(<VerifyEmail name={email} url={url} />);
 
   const { data, error } = await resend.emails.send({
     from: "onboarding@resend.dev",
