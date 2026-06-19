@@ -17,11 +17,11 @@ export default function RegisterPage() {
       name: form.name,
       email: form.email,
       password: form.password,
-      callbackURL: "/login",
+      callbackURL: "/dashboard",
     });
 
     if (!error) {
-      router.push("/login");
+      router.push("/verify");
     }
   }
 
