@@ -1,7 +1,7 @@
 import { getSessionCookie } from "better-auth/cookies";
 import { type NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const session = getSessionCookie(request);
 
   if (!session && request.nextUrl.pathname.startsWith("/dashboard")) {
