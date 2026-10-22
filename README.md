@@ -1,70 +1,92 @@
-# Better Auth Starter
+Better Auth Starter
 
-A production-ready authentication template built with Next.js, Better Auth, Drizzle ORM, Neon (PostgreSQL), and Resend.
+A reusable starter template for building authenticated web applications with Next.js, TypeScript, Better Auth, Drizzle ORM, and PostgreSQL.
 
-## Stack
+Tech Stack
 
-- **Framework** — Next.js 16 (App Router, TypeScript)
-- **Auth** — Better Auth
-- **Database** — Neon (PostgreSQL) via Drizzle ORM
-- **Email** — Resend + React Email
-- **UI** — shadcn/ui + Tailwind CSS
+* Framework: Next.js (App Router)
+* Language: TypeScript
+* Authentication: Better Auth
+* Database ORM: Drizzle ORM
+* Database: PostgreSQL
+* Styling: Tailwind CSS
+* Email: Resend
+* Package Manager: Use the package manager and lockfile included in this repository
 
-## Features
+Features
 
-- Email/password authentication
-- Email verification on signup
-- Password reset via email
-- Route protection (middleware + server-side layout)
-- React Email templates
+* Email and password authentication
+* User registration and login
+* Email verification
+* Password reset flow
+* Session-based authentication
+* Protected dashboard pages
+* PostgreSQL database schema
+* Drizzle ORM integration
+* Email templates for authentication workflows
 
-## Getting Started
+Features and configuration should be verified against the current source code before using this template in production.
 
-1. Clone the repo
+Getting Started
+
+1. Clone the repository
+
+git clone YOUR_REPOSITORY_URL
+cd YOUR_PROJECT_DIRECTORY
+
+Replace the placeholders with your repository URL and project directory.
+
 2. Install dependencies
-```bash
-   bun install
-```
-3. Copy `.env.example` to `.env.local` and fill in your keys
-```bash
-   cp .env.example .env.local
-```
-4. Push the schema to your database
-```bash
-   bunx drizzle-kit push
-```
-5. Run the dev server
-```bash
-   bun dev
-```
 
-## Environment Variables
+Use the package manager matching the lockfile in the repository.
 
-```bash
-BETTER_AUTH_SECRET=
-BETTER_AUTH_URL=# http://localhost:3000 in dev, https://yourdomain.com in prod
-DATABASE_URL=
-RESEND_API_KEY=
-```
+For example, if the project uses npm:
 
-## Project Structure
+npm install
 
-```
-src/
-├── app/
-│   ├── dashboard/        # Protected route
-│   ├── forgot-password/
-│   ├── login/
-│   ├── register/
-│   ├── reset-password/
-│   └── verify/
-├── emails/               # React Email templates
-├── lib/
-│   ├── auth.ts           # Better Auth config
-│   ├── auth-client.ts    # Client-side auth
-│   ├── auth-schema.ts    # Drizzle schema
-│   ├── db.ts             # Database client
-│   ├── send-verification-email.tsx
-│   └── send-password-reset-email.tsx
-└── middleware.ts          # Edge route protection
-```
+3. Configure environment variables
+
+Create a local .env file using the variables required by the project.
+
+Check the source code and existing environment example files for the exact variable names, which may include:
+
+* Database connection URL
+* Better Auth secret
+* Application base URL
+* Resend API key
+
+Never commit real secrets, API keys, or production database credentials to GitHub.
+
+4. Configure the database
+
+Set up a PostgreSQL database and provide its connection URL.
+
+Review the Drizzle configuration and database scripts in package.json. Generate and apply migrations using the commands configured for this project.
+
+5. Run the development server
+
+For an npm-based project, the command may be:
+
+npm run dev
+
+Open the local development URL shown in the terminal.
+
+Before Production
+
+Before deploying an application built from this template:
+
+* Verify registration, login, logout, email verification, and password reset.
+* Confirm sessions and protected routes behave correctly.
+* Enforce authorization on server-side actions and data access.
+* Review database migrations and connection settings.
+* Configure email delivery and production environment variables.
+* Run linting, type checking, and a production build.
+* Review dependency versions and security advisories.
+
+A successful login does not automatically mean a user has administrator permissions. Add and enforce an explicit role or permission system for applications that require admin-only features.
+
+Project Documentation
+
+Update this README whenever the template’s dependencies, scripts, authentication flows, or setup requirements change.
+
+Keep project-specific business information in the README of each application created from this template.
